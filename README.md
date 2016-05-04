@@ -13,29 +13,16 @@ in different rooms). Real time usage of components in the room as well as curren
 and humidity is displayed together with diagrams over historical conditions.
 
 # Table of contents
-- [Users Guide](#id-usersguide)
-- [Developers Guide](#id-developersguide)
-    - [Solution Overview](#id-solutionsoverview)
-    - [Components](#id-components)
-        - [Yanzi Cirrus API](#id-cirrus)
-            - [Overview](#id-cirrusoverview)
-            - [Essentials](#id-yanziessentials)
-            - [Further Readings](#id-yanzifurtherreadings)
-        - [Adapter](#id-adapter)
-        - [Microsoft Azure Event hub](#id-eventhub)
-        - [Microsoft Azure Stream Analytics](#id-streamanalytics)
-            - [Overview](#id-streamanalyticsoverview)
-            - [Real Time Data](#id-streamanalyticsrtdata)
-            - [Historical Data](#id-streamanalyticshdata)
-            - [Setup Guide](#id-streamanalyticssetupguide)
-            - [Further Readings](#id-streamanalyticsfurtherreadings)
-        - [asp.NET](#id-aspnet)
-            - [Overview](#id-aspnetoverview)
-            - [Real Time Data](#id-aspnetrtdata)
-            - [Historical Data](#id-aspnethdata)
-            - [Setup Guide](#id-aspnetsetupguide)
-            - [Further Readings](#id-aspnetfurtherreadings)
-        - [GUI](#gui)
+- [Users Guide](#usersguide)
+- [Developers Guide](#developersguide)
+    - [Solution Overview](#solutionsoverview)
+    - [Components](#components)
+        - [Yanzi Cirrus API](#cirrus)
+        - [Adapter](#adapter)
+        - [Azure Event hub](#eventhub)
+        - [Azure Stream Analytics](#streamanalytics)
+        - [ASP.NET (Backend)](#aspnet)
+        - [Frontend](#gui)
 
 # User's Guide <a name="usersguide"></a>
 
@@ -178,7 +165,7 @@ Every data point received by Stream Analytics contributes to an hourly average d
 
 <hr>
 
-### ASP.NET <a name="aspnet"></a>
+### ASP.NET Backend <a name="aspnet"></a>
 
 #### Overview
 
