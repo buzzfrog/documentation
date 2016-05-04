@@ -165,7 +165,98 @@ Every data point received by Stream Analytics contributes to an hourly average d
 
 #### Stream Analytics Query
 
-*Insert configuration tutorial [Emma]*
+```sql
+with
+-- Contains a timestamped sample list
+SampleList as (
+    select
+        SampleList.ArrayValue as SampleList,
+        -- Asset utilization data has an EventEnqueuedUtcTime
+        -- which is a better timestamp than timeSent
+        c.EventEnqueuedUtcTime as EventTime
+    from Cirrus as C
+    -- Convert from Unix to Microsoft time
+    timestamp by DATEADD(millisecond, timeSent, '1970-01-01T00:00:00Z')
+    cross apply GetArrayElements(C.list) as SampleList
+),
+-- Contains each individual sample
+SampleInfo as (
+    select
+        Sample.SampleList.dataSourceAddress.did as SensorId,
+        Sample.SampleList.dataSourceAddress.variableName.name as Type,
+        GetArrayLength(Sample.SampleList.list) as SampleLength,
+        Data.ArrayIndex as SampleIndex,
+        Data.ArrayValue.value as Value,
+        dateadd(millisecond, Data.ArrayValue.SampleTime, '1970-01-01T00:00:00Z') as SampleTime,
+        Sample.EventTime,
+        Rooms.RoomId
+
+    from SampleList Sample
+    left outer join Rooms
+
+    -- on substring(Sample.SampleList.dataSourceAddress.did,1,len(R.SensorId)) = R.SensorId
+    -- Because Stream Analytics wouldn't accept the line above
+    -- using a case-statement is an alternative solution
+    -- This is to remove the "-temp", "-humd" etc at the end of the unit address
+    on (case substring(Sample.SampleList.dataSourceAddress.did,1,1)
+            -- If did starts with 'E' it's a unit
+            when 'E' then substring(Sample.SampleList.dataSourceAddress.did,1,22)
+            -- If did starts with 'U' it's an asset
+            when 'U' then Sample.SampleList.dataSourceAddress.did
+            else ''
+    end) = Rooms.SensorId
+    cross apply GetArrayElements(Sample.SampleList.list) as Data
+    -- To make sure data from unwanted locations are removed
+    where Sample.SampleList.dataSourceAddress.locationId = '871073'
+),
+-- Contains only the samples of the Types we're interested in
+Data as (
+    select
+        SensorId, RoomId,
+        -- Rename some sample Types
+        case Type
+            when 'temperature' then 'temperature'
+            when 'relativeHumidity' then 'humidity'
+            when 'percentage' then 'utilization'
+            else null
+        end as Type,
+        -- Convert temperature from Kelvin to Celsius
+        case Type
+            when 'temperature' then Value - 273.15
+            else Value
+        end as Value,
+        SampleIndex, SampleLength,
+        -- Use different timestamps depending on sample Type
+        case Type
+            when 'temperature' then SampleTime
+            when 'relativeHumidity' then SampleTime
+            when 'percentage' then EventTime
+            else null
+        end as Collected
+
+    from SampleInfo
+    -- Sort out sample Types of interest
+    where (Type = 'temperature' or Type = 'relativeHumidity' or Type = 'percentage')
+),
+-- Contains samples only if it was the latest in a message from Cirrus
+-- (i.e. the last in a sampleList in a message)
+CurrentData as (
+    select *
+    from Data
+    where SampleLength - 1  = SampleIndex
+),
+-- Aggregates samples in a tumbling window of one hour
+AggregatedData as (
+    select avg(Value) as Value, Type, SensorId, RoomId, System.TimeStamp as Collected
+    from Data -- timestamp by Collected
+    group by TumblingWindow(minute, 60), Type, SensorId, RoomId
+)
+
+select SensorId, Type, value, Collected, RoomId into backendqueue from CurrentData
+select SensorId, Type, value, Collected, RoomId into mvkdatabase from AggregatedData
+
+
+```
 
 #### Further Readings
 
