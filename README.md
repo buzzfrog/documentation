@@ -196,15 +196,21 @@ Configure the application by creating a static class `Config.cs` in the `src/api
 
 * [WebSockets in ASP.NET Core](https://docs.asp.net/en/latest/fundamentals/owin.html#run-asp-net-5-on-an-owin-based-server-and-use-its-websockets-support)
 * [Entity Framework Core](http://docs.efproject.net/en/latest/)
-* [Dependency Injection ](https://docs.asp.net/en/latest/fundamentals/dependency-injection.html#registering-your-own-services)(the real time component is a Service registered with `AddInstance` to allow for continuous operation)
+* [Dependency Injection ](https://docs.asp.net/en/latest/fundamentals/dependency-injection.html#registering-your-own-services)(the real time component is a Service registered with `AddInstance to allow for continuous operation)
 
-### GUI (Graphic User Interface) <a name="gui"></a>
+### Frontend (Graphical User Interface) <a name="gui"></a>
 
 #### Overview
 
-A map of the building in question is displayed, showing every available room and the conditions
-for that particular room.
+Presents an interactive indoor room map, color coded based on sensor data.
 
-#### In depth
+#### Essentials
+
+The frontend which end-users interact with is a React web application that renders a map of a building floor plan.
+All rooms on the map are color coded based on current sensor data values, and can be interacted with by the user.
+
+Data updates are pushed to the frontend using a WebSocket connection. This allows for real time color updates of the rooms on the map. When a user interacts with a given room the historical data endpoint of the ASP.NET API is queried. Historical data is presented in a graph.
 
 #### Setup Guide
+
+Setup and run the frontend using `npm install` and `npm start`.
