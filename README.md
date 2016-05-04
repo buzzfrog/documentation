@@ -14,7 +14,7 @@ and humidity is displayed together with diagrams over historical conditions.
 
 # Table of contents
 - [User's Guide](#usersguide)
-- [Developers Guide](#developersguide)
+- [Developer's Guide](#developersguide)
     - [Solution Overview](#solutionoverview)
     - [Components](#components)
         - [Yanzi Cirrus API](#cirrus)
