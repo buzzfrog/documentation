@@ -84,6 +84,8 @@ This solution uses the simplified Yanzi Cirrus API known as *Shrek* with basic a
 
 For technical documentation contact [Yanzi](http://www.yanzinetworks.com/).
 
+<hr>
+
 ### Adapter <a name="adapter"></a>
 
 #### Overview
@@ -118,6 +120,8 @@ folder of the [adapter solution](https://github.com/mvk2016/adapter):
 Note: Make sure `Connection.config` is copied to your output directory on compile.
 Run the adapter as you would any C# solution in Visual Studio.
 
+<hr>
+
 ### Azure Event hub <a name="eventhub"></a>
 
 #### Overview
@@ -137,6 +141,8 @@ Event Hub has a connection string with permission to send events into the hub.
 #### Further Readings
 
 [Technical documentation](https://azure.microsoft.com/documentation/services/events-hubs/)
+
+<hr>
 
 ### Azure Stream Analytics <a name="streamanalytics"></a>
 
@@ -170,6 +176,8 @@ Every data point received by Stream Analytics contributes to an hourly average d
 
 [Technical documentation](https://azure.microsoft.com/sv-se/documentation/services/stream-analytics/)
 
+<hr>
+
 ### ASP.NET <a name="aspnet"></a>
 
 #### Overview
@@ -202,6 +210,8 @@ Configure the application by creating a static class `Config.cs` in the `src/api
 * [WebSockets in ASP.NET Core](https://docs.asp.net/en/latest/fundamentals/owin.html#run-asp-net-5-on-an-owin-based-server-and-use-its-websockets-support)
 * [Entity Framework Core](http://docs.efproject.net/en/latest/)
 * [Dependency Injection ](https://docs.asp.net/en/latest/fundamentals/dependency-injection.html#registering-your-own-services)(the real time component is a Service registered with `AddInstance to allow for continuous operation)
+
+<hr>
 
 ### Frontend (Graphical User Interface) <a name="gui"></a>
 
