@@ -40,8 +40,11 @@ and humidity is displayed together with diagrams over historical conditions.
 # User's Guide <a name="usersguide"></a>
 
 ![Image](images/smartmap-1.png?raw=true)
+*All rooms on a floor are displayed on the map as seen in the screenshot above.*
 
-*Insert screenshots and caption for the different views*
+![Image](images/smartmap-2.png?raw=true)
+
+*When a user clicks on a room its historical data is shown in a graph together with room details.*
 
 # Developer's Guide <a name="developersguide"></a>
 
