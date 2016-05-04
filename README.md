@@ -13,9 +13,9 @@ in different rooms). Real time usage of components in the room as well as curren
 and humidity is displayed together with diagrams over historical conditions.
 
 # Table of contents
-- [Users Guide](#usersguide)
+- [User's Guide](#usersguide)
 - [Developers Guide](#developersguide)
-    - [Solution Overview](#solutionsoverview)
+    - [Solution Overview](#solutionoverview)
     - [Components](#components)
         - [Yanzi Cirrus API](#cirrus)
         - [Adapter](#adapter)
@@ -24,7 +24,8 @@ and humidity is displayed together with diagrams over historical conditions.
         - [ASP.NET (Backend)](#aspnet)
         - [Frontend](#gui)
 
-# User's Guide <a name="usersguide"></a>
+<a name="usersguide"></a>
+# User's Guide
 
 ![Image](images/smartmap-1.png?raw=true)
 *All rooms on a floor are displayed on the map as seen in the screenshot above.*
@@ -33,9 +34,11 @@ and humidity is displayed together with diagrams over historical conditions.
 
 *When a user clicks on a room its historical data is shown in a graph together with room details.*
 
-# Developer's Guide <a name="developersguide"></a>
+<a name="developersguide"></a>
+# Developer's Guide
 
-## Solution Overview <a name="solutionoverview"></a>
+<a name="solutionoverview"></a>
+## Solution Overview
 
 *Insert component schema*
 
@@ -54,26 +57,29 @@ An *ASP.NET* web application handles the task of making both real time and histo
 
 It provides an HTTP JSON RESTful API, backed by SQL, where static map data (buildings, floors, rooms) and historical averages can be queried. It also allows for WebSocket connections where every data point put in the Service Bus Queue is broadcasted to all connected clients.
 
-## Components <a name="components"></a>
+<a name="components"></a>
+## Components
 
-### Yanzi Cirrus API <a name="cirrus"></a>
+<a name="cirrus"></a>
+### Yanzi Cirrus API
 
-#### Overview <a name="cirrusoverview"></a>
+#### Overview
 
 Cirrus is the API provided by Yanzi which provides sensor and event data using WebSockets.
 
-#### Essentials <a name="yanziessentials"></a>
+#### Essentials
 
 Access and other necessities regarding Cirrus is provided by [Yanzi](http://www.yanzinetworks.com/).
 This solution uses the simplified Yanzi Cirrus API known as *Shrek* with basic authentication instead of certificates.
 
-#### Further Readings <a name="yanzifurtherreadings"></a>
+#### Further Readings
 
 For technical documentation contact [Yanzi](http://www.yanzinetworks.com/).
 
 <hr>
 
-### Adapter <a name="adapter"></a>
+<a name="adapter"></a>
+### Adapter
 
 #### Overview
 
@@ -109,7 +115,8 @@ Run the adapter as you would any C# solution in Visual Studio.
 
 <hr>
 
-### Azure Event hub <a name="eventhub"></a>
+<a name="eventhub"></a>
+### Azure Event hub
 
 #### Overview
 
@@ -131,9 +138,10 @@ Event Hub has a connection string with permission to send events into the hub.
 
 <hr>
 
-### Azure Stream Analytics <a name="streamanalytics"></a>
+<a name="streamanalytics"></a>
+### Azure Stream Analytics
 
-#### Overview <a name="streamanalyticsoverview"></a>
+#### Overview
 
 Stream Analytics processes incoming data and transforms it form Cirrus's message format to a custom data model.
 
@@ -145,27 +153,28 @@ Analytics.
 
 #### Essentials
 
-##### Real Time Data  <a name="streamanalyticsrtdata"></a>
+##### Real Time Data
 
 When Stream Analytics receives data it is transformed to the custom data model and then pushed to a Service Bus
 Queue (later used for real time updates of the GUI).
 
-##### Historical Data <a name="streamanalyticshdata"></a>
+##### Historical Data
 
 Every data point received by Stream Analytics contributes to an hourly average data value for each sensor
 (TumblingWindow). Each calculated average value is stored in SQL.
 
-#### Stream Analytics Query <a name="streamanalyticssetup"></a>
+#### Stream Analytics Query
 
 *Insert configuration tutorial [Emma]*
 
-#### Further Readings <a name="streamanalyticsfurtherreadings"></a>
+#### Further Readings
 
 [Technical documentation](https://azure.microsoft.com/sv-se/documentation/services/stream-analytics/)
 
 <hr>
 
-### ASP.NET Backend <a name="aspnet"></a>
+<a name="aspnet"></a>
+### ASP.NET Backend
 
 #### Overview
 
@@ -174,25 +183,25 @@ interface using HTTP and WebSockets.
 
 #### Essentials
 
-##### Real Time Data  <a name="aspnetrtdata"></a>
+##### Real Time Data
 
 In order to push new data in real time a WebSocket is used between the ASP.NET
 application and the GUI. Every real time data point received from the data layer is broadcasted to all connected
 clients.
 
-##### Historical Data <a name="aspnethdata"></a>
+##### Historical Data
 
 Both historical sensor data (hourly averages) and static map data (available buildings, floors and rooms) can be
 fetched using an HTTP JSON RESTful API, backed by SQL. A [detailed API reference can be read at the root URL](
 http://api20160426022719.azurewebsites.net/) of a deployed version of the application.
 
-#### Setup Guide <a name="aspnetsetupguide"></a>
+#### Setup Guide
 
 The application is an ASP.NET Core (also known as ASP.NET 5) web application. For setup instructions please reference the [ASP.NET Core documentation](https://docs.asp.net/en/latest/getting-started/).
 
 Configure the application by creating a static class `Config.cs` in the `src/api` directory of the solution. This file must contain two strings: `SqlConnectionString` and `QueueConnectionString`, containing your SQL Server connection string and a Service Bus Queue connection string with read permission. Run the application using `dnx web`.
 
-#### Further Readings <a name="aspnetfurtherreadings"></a>
+#### Further Readings
 
 * [WebSockets in ASP.NET Core](https://docs.asp.net/en/latest/fundamentals/owin.html#run-asp-net-5-on-an-owin-based-server-and-use-its-websockets-support)
 * [Entity Framework Core](http://docs.efproject.net/en/latest/)
@@ -200,7 +209,8 @@ Configure the application by creating a static class `Config.cs` in the `src/api
 
 <hr>
 
-### Frontend (Graphical User Interface) <a name="gui"></a>
+<a name="gui"></a>
+### Frontend (Graphical User Interface)
 
 #### Overview
 
