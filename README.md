@@ -143,7 +143,7 @@ Event Hub has a connection string with permission to send events into the hub.
 
 #### Overview
 
-Stream Analytics processes incoming data and transforms it form Cirrus's message format to a custom data model.
+Stream Analytics processes incoming data and transforms it from Cirrus's message format to a custom data model.
 
 When receiving data from the sensors, it is important that the information is displayed in real
 time as well as being saved in the database.
