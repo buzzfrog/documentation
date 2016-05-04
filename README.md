@@ -1,4 +1,4 @@
-*(insert logotype)*
+![Image](images/logo.png?raw=true)
 
 **Yanzi Smart Map is a solution for visualizing Yanzi sensor data. It colorizes individual
 rooms in a floor plan and allows interaction with the rooms.**
