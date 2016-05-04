@@ -68,32 +68,62 @@ It provides an HTTP JSON RESTful API, backed by SQL, where static map data (buil
 
 #### Overview <a name="cirrusoverview"></a>
 
-Cirrus is the API provided by Yanzi which carries out the necessary information about the sensors using websockets.
+Cirrus is the API provided by Yanzi which provides sensor and event data using WebSockets.
 
 #### Essentials <a name="yanziessentials"></a>
 
 Access and other necessities regarding Cirrus is provided by [Yanzi](http://www.yanzinetworks.com/).
+This solution uses the simplified Yanzi Cirrus API known as *Shrek* with basic authentication instead of certificates.
 
 #### Further Readings <a name="yanzifurtherreadings"></a>
 
-[Technical documentation](http://www.yanzinetworks.com/pdf/product-brief/product-brief-890-07065-cirrus-iot-solution-smart-building-ibm-v01pa3.pdf)
+For technical documentation contact [Yanzi](http://www.yanzinetworks.com/).
 
 ### Adapter <a name="adapter"></a>
 
 #### Overview
 
-Takes the data from the web socket provided by Cirrus and commits it to the Event Hub without
-processing it.
+Pushes sensor and event data from Cirrus to an Azure Event Hub.
 
-#### In depth
+#### Essentials
+
+The adapter takes the following actions:
+
+1. Connect and authenticate to Cirrus
+2. Subscribe to events from a given Cirrus location ID
+3. Pass all incoming messages to an Azure Event Hub
+4. Reconnect to Cirrus if connection drops
 
 #### Setup guide
 
-### Microsoft Azure Event hub <a name="eventhub"></a>
+All necessary configuration needed to run the adapter is located in the file `Connection.config` located in the root
+folder of the [adapter solution](https://github.com/mvk2016/adapter):
+
+```xml
+<?xml version="1.0" encoding="utf-8" ?>
+<appSettings>
+  <add key="YanziHost" value="wss://cirrusbeta.yanzi.se/cirrusAPI" />
+  <add key="YanziUser" value="user@email.com" />
+  <add key="YanziPass" value="password" />
+  <add key="YanziLocation" value="871073" />
+  <add key="SourceHubConnectionString" value="Endpoint=sb://myeventhub-ns.servicebus.windows.net/;SharedAccessKeyName=SendRule;SharedAccessKey={...}" />
+  <add key="SourceHubName" value="myeventhub" />
+</appSettings>
+```
+Note: Make sure `Connection.config` is copied to your output directory on compile.
+Run the adapter as you would any C# solution in Visual Studio.
+
+### Azure Event hub <a name="eventhub"></a>
 
 #### Overview
 
-#### In depth
+Azure Event Hub buffers events until they are processed by a consumer. For more information about Event Hub
+[Microsoft Azure Technical documentation](https://azure.microsoft.com/documentation/services/events-hubs/).
+
+#### Essentials
+
+Setting up the Event Hub is done in a few steps in Azure. Create a Service Bus with an Event Hub. Make sure your
+Event Hub has a connection string with permission to send events into the hub.
 
 #### Setup Guide
 
@@ -103,27 +133,29 @@ processing it.
 
 [Technical documentation](https://azure.microsoft.com/documentation/services/events-hubs/)
 
-### Microsoft Azure Stream Analytics <a name="streamanalytics"></a>
+### Azure Stream Analytics <a name="streamanalytics"></a>
 
 #### Overview <a name="streamanalyticsoverview"></a>
 
-Stream Analytics processes the data and adjust the format in a way that is compatible with Yanzi
-Smart Map, making sure that the data contains the necessary information.
+Stream Analytics processes incoming data and transforms it form Cirrus's message format to a custom data model.
 
 When receiving data from the sensors, it is important that the information is displayed in real
 time as well as being saved in the database.
 
-Since the solution processes different types of data, it requires two output streams from Stream
-Analytics, one for each data type.
+Since the solution processes both real time and historical data, it requires two output streams from Stream
+Analytics.
 
-#### Real Time Data  <a name="streamanalyticsrtdata"></a>
+#### Essentials
 
-When Stream Analytics receives real time data it is transmitted via the Event Hub to a websocket.
+##### Real Time Data  <a name="streamanalyticsrtdata"></a>
 
-#### Historical Data <a name="streamanalyticshdata"></a>
+When Stream Analytics receives data it is transformed to the custom data model and then pushed to a Service Bus
+Queue (later used for real time updates of the GUI).
 
-Historical data is saved in a database. Queries for the average values will later be made using the historic data,
-displayed as graphs in the graphic user interface.
+##### Historical Data <a name="streamanalyticshdata"></a>
+
+Every data point received by Stream Analytics contributes to an hourly average data value for each sensor
+(TumblingWindow). Each calculated average value is stored in SQL.
 
 #### Setup Guide <a name="streamanalyticssetup"></a>
 
@@ -138,17 +170,20 @@ displayed as graphs in the graphic user interface.
 #### Overview
 
 ASP.NET takes information provided from the data layer and makes it available for the graphic user
-interface.
+interface using HTTP and WebSockets.
 
-#### Real Time Data  <a name="aspnetrtdata"></a>
+#### Essentials
 
-In order to push new data in real time a websocket is used between the ASP.NET
-application and the GUI.
+##### Real Time Data  <a name="aspnetrtdata"></a>
 
-#### Historical Data <a name="aspnethdata"></a>
+In order to push new data in real time a WebSocket is used between the ASP.NET
+application and the GUI. Every real time data point received from the data layer is broadcasted to all connected
+clients.
 
-The historic data is assembled using queries on the database and after
-that transfered to the GUI via http-protocol.
+##### Historical Data <a name="aspnethdata"></a>
+
+Both historical sensor data (hourly averages) and static map data (available buildings, floors and rooms) can be
+fetched using an HTTP JSON RESTful API, backed by SQL.
 
 #### Setup Guide <a name="aspnetsetupguide"></a>
 
