@@ -1,4 +1,4 @@
-*(insert logotype)*
+![Image](images/logo.png?raw=true)
 
 **Yanzi Smart Map is a solution for visualizing Yanzi sensor data. It colorizes individual
 rooms in a floor plan and allows interaction with the rooms.**
@@ -40,7 +40,7 @@ and humidity is displayed together with diagrams over historical conditions.
 <a name="solutionoverview"></a>
 ## Solution Overview
 
-*Insert component schema*
+![Image](images/system_map.png?raw=true)
 
 **In short, data flows from left to right in the system schema pictured above.**
 
