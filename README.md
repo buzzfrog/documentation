@@ -121,7 +121,7 @@ Run the adapter as you would any C# solution in Visual Studio.
 #### Overview
 
 Azure Event Hub buffers events until they are processed by a consumer. For more information about Event Hub
-[Microsoft Azure Technical documentation](https://azure.microsoft.com/documentation/services/events-hubs/).
+[Microsoft Azure Technical documentation](https://azure.microsoft.com/documentation/services/event-hubs/).
 
 #### Essentials
 
@@ -134,7 +134,7 @@ Event Hub has a connection string with permission to send events into the hub.
 
 #### Further Readings
 
-[Technical documentation](https://azure.microsoft.com/documentation/services/events-hubs/)
+[Technical documentation](https://azure.microsoft.com/documentation/services/event-hubs/)
 
 <hr>
 
@@ -169,7 +169,7 @@ Every data point received by Stream Analytics contributes to an hourly average d
 
 #### Further Readings
 
-[Technical documentation](https://azure.microsoft.com/sv-se/documentation/services/stream-analytics/)
+[Technical documentation](https://azure.microsoft.com/documentation/services/stream-analytics/)
 
 <hr>
 
