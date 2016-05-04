@@ -40,7 +40,7 @@ and humidity is displayed together with diagrams over historical conditions.
 <a name="solutionoverview"></a>
 ## Solution Overview
 
-*Insert component schema*
+![Image](images/system_map.png?raw=true)
 
 **In short, data flows from left to right in the system schema pictured above.**
 
