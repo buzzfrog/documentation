@@ -157,7 +157,7 @@ Queue (later used for real time updates of the GUI).
 Every data point received by Stream Analytics contributes to an hourly average data value for each sensor
 (TumblingWindow). Each calculated average value is stored in SQL.
 
-#### Setup Guide <a name="streamanalyticssetup"></a>
+#### Stream Analytics Query <a name="streamanalyticssetup"></a>
 
 *Insert configuration tutorial [Emma]*
 
@@ -183,15 +183,20 @@ clients.
 ##### Historical Data <a name="aspnethdata"></a>
 
 Both historical sensor data (hourly averages) and static map data (available buildings, floors and rooms) can be
-fetched using an HTTP JSON RESTful API, backed by SQL.
+fetched using an HTTP JSON RESTful API, backed by SQL. A [detailed API reference can be read at the root URL](
+http://api20160426022719.azurewebsites.net/) of a deployed version of the application.
 
 #### Setup Guide <a name="aspnetsetupguide"></a>
 
-*Insert configuration tutorial [Mauritz]*
+The application is an ASP.NET Core (also known as ASP.NET 5) web application. For setup instructions please reference the [ASP.NET Core documentation](https://docs.asp.net/en/latest/getting-started/).
+
+Configure the application by creating a static class `Config.cs` in the `src/api` directory of the solution. This file must contain two strings: `SqlConnectionString` and `QueueConnectionString`, containing your SQL Server connection string and a Service Bus Queue connection string with read permission. Run the application using `dnx web`.
 
 #### Further Readings <a name="aspnetfurtherreadings"></a>
 
-[Technical documentation](https://docs.asp.net/)
+* [WebSockets in ASP.NET Core](https://docs.asp.net/en/latest/fundamentals/owin.html#run-asp-net-5-on-an-owin-based-server-and-use-its-websockets-support)
+* [Entity Framework Core](http://docs.efproject.net/en/latest/)
+* [Dependency Injection ](https://docs.asp.net/en/latest/fundamentals/dependency-injection.html#registering-your-own-services)(the real time component is a Service registered with `AddInstance` to allow for continuous operation)
 
 ### GUI (Graphic User Interface) <a name="gui"></a>
 
