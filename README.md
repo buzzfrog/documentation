@@ -39,6 +39,8 @@ and humidity is displayed together with diagrams over historical conditions.
 
 # User's Guide <a name="usersguide"></a>
 
+![Image](images/smartmap-1.png?raw=true)
+
 *Insert screenshots and caption for the different views*
 
 # Developer's Guide <a name="developersguide"></a>
