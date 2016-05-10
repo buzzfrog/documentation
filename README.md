@@ -19,7 +19,7 @@ and humidity is displayed together with diagrams over historical conditions.
     - [Components](#components)
         - [Yanzi Cirrus API](#cirrus)
         - [Adapter](#adapter)
-        - [Azure Event hub](#eventhub)
+        - [Azure Event Hub and Service Bus Queue](#eventhub)
         - [Azure Stream Analytics](#streamanalytics)
         - [ASP.NET (Backend)](#aspnet)
         - [Frontend](#gui)
@@ -116,25 +116,31 @@ Run the adapter as you would any C# solution in Visual Studio.
 <hr>
 
 <a name="eventhub"></a>
-### Azure Event hub
+### Azure Event Hub and Service Bus Queue
 
 #### Overview
 
-Azure Event Hub buffers events until they are processed by a consumer. For more information about Event Hub
-[Microsoft Azure Technical documentation](https://azure.microsoft.com/documentation/services/event-hubs/).
+Azure Event Hub and Service Bus Queue are connecting Azure services to each other and to outside consumers and producers. They both buffer events until they are processed by a consumer.
 
 #### Essentials
 
-Setting up the Event Hub is done in a few steps in Azure. Create a Service Bus with an Event Hub. Make sure your
-Event Hub has a connection string with permission to send events into the hub.
+An Event Hub is used as the connection between the Cirrus Adapter and Stream Analytics, and a Service Bus Queue forwards the Stream Analytics results to the ASP.NET web application.
 
 #### Setup Guide
 
-*Insert configuration tutorial [Emma]*
+Setting up the Event Hub and Service Bus Queue is done in a few steps in Azure.
+First quick create a Service Bus with a Queue and an Event Hub.
+They are contained within a Service Bus namespace, and at this step a new namespace can be created.
+
+To be able to send message to, and receive messages from the Event Hub and Queue, shared access policies need to be configured as the image below shows.
+
+![Image](images/shared_access_policies.png?raw=true)
 
 #### Further Readings
 
-[Technical documentation](https://azure.microsoft.com/documentation/services/event-hubs/)
+[Technical documentation on Event Hubs](https://azure.microsoft.com/en-us/documentation/services/event-hubs/)
+
+[Technical documentation on Service Bus Queues](https://azure.microsoft.com/en-us/documentation/services/service-bus/)
 
 <hr>
 
